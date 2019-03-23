@@ -667,7 +667,7 @@ class miro_ros_client_gui:
                          c.P2U_W_affect_signals = c.P2U_W_affect_signals | miro.MIRO_P2U_W_AFFECT_FROM_WAKEFULNESS
                          rospy.set_param(self.param_root_path + self.AFFECT_FROM_WAKEFULNESS,True)
                     else: rospy.set_param(self.param_root_path + self.AFFECT_FROM_WAKEFULNESS,False)
-                    
+                 
                     if self.chk_affect_from_touch.get_active():
                          c.P2U_W_affect_signals = c.P2U_W_affect_signals | miro.MIRO_P2U_W_AFFECT_FROM_TOUCH
                          rospy.set_param(self.param_root_path + self.AFFECT_FROM_TOUCH,True)
@@ -737,7 +737,7 @@ class miro_ros_client_gui:
                          c.P2U_W_express_signals = c.P2U_W_express_signals | miro.MIRO_P2U_W_EXPRESS_THROUGH_BODY
                          rospy.set_param(self.param_root_path + self.EXPRESS_THROUGH_BODY,True)
                     else: rospy.set_param(self.param_root_path + self.EXPRESS_THROUGH_BODY,False)
-                    
+
                     if self.chk_debug_sonar.get_active():
                          c.P2U_W_express_signals = c.P2U_W_express_signals | miro.MIRO_P2U_W_DEBUG_SONAR
                          rospy.set_param(self.param_root_path + self.DEBUG_SONAR,True)
@@ -782,8 +782,7 @@ class miro_ros_client_gui:
                          c.P2U_W_action_signals = c.P2U_W_action_signals | miro.MIRO_P2U_W_ACTION_MODULATE_BY_SONAR
                          rospy.set_param(self.param_root_path + self.ACTION_MODULATE_BY_SONAR,True)
                     else: rospy.set_param(self.param_root_path + self.ACTION_MODULATE_BY_SONAR,False)
-                    
-                         
+                                             
                     if self.chk_body_enable.get_active():
                          c.P2U_W_body_signals = c.P2U_W_body_signals | miro.MIRO_P2U_W_BODY_ENABLE
                          rospy.set_param(self.param_root_path + self.BODY_ENABLE,True)
@@ -828,7 +827,7 @@ class miro_ros_client_gui:
                          c.P2S_W_signals = c.P2S_W_signals | miro.MIRO_P2S_W_SPATIAL_ENABLE
                          rospy.set_param(self.param_root_path + self.SPATIAL_ENABLE,True)
                     else: rospy.set_param(self.param_root_path + self.SPATIAL_ENABLE,False)
-                    
+
                     if self.chk_spatial_ignore_audio.get_active():
                          c.P2S_W_signals = c.P2S_W_signals | miro.MIRO_P2S_W_SPATIAL_IGNORE_AUDIO
                          rospy.set_param(self.param_root_path + self.SPATIAL_IGNORE_AUDIO,True)
@@ -1037,7 +1036,7 @@ class miro_ros_client_gui:
         obj = self.builder.get_object(label)
         obj.connect("clicked", self.redo_config)        
         self.demo_mode_boxes[obj.get_label()] = obj
-#        print("Bheaviour controlling flag (see ROS param): " + obj.get_label())
+        print("Bheaviour controlling flag (see ROS param): " + obj.get_label())
         if demo_mode_setting:
             self.demo_mode_on.append(obj)
         else:
@@ -1410,12 +1409,12 @@ class miro_ros_client_gui:
         self.ima = bytearray(self.w_mics*self.h_mics*3)
         self.imb = bytearray(self.w_mics*self.h_mics*3)
         self.spatial_record = 0
-        
-        # start ros parameter chekcer    
-        self.rosparam_checker.start()
-        
+                
         # start update timer
         GLib.timeout_add(100, self.update_ui)
+
+        # start ros parameter chekcer    
+        self.rosparam_checker.start()
 
 
     # tread to check the ros parameter server value
@@ -1425,7 +1424,7 @@ class miro_ros_client_gui:
         while not rospy.is_shutdown():
             self.mutex.acquire()
             try:
-                self.checkParam(self.BODY_ENABLE)
+		self.checkParam(self.BRANCH_ENABLE)
                 self.checkParam(self.AFFECT_ENABLE)
                 self.checkParam(self.AFFECT_ADJUST_RTC)
                 self.checkParam(self.AFFECT_VALENCE_DYNAMICS)
@@ -1435,7 +1434,7 @@ class miro_ros_client_gui:
                 self.checkParam(self.AFFECT_FROM_WAKEFULNESS)
                 self.checkParam(self.AFFECT_FROM_TOUCH)
                 self.checkParam(self.AFFECT_FROM_LIGHT)
-                self.checkParam(self.AFFECT_FROM_SOUND)
+		self.checkParam(self.AFFECT_FROM_SOUND)
                 self.checkParam(self.AFFECT_FROM_ACCEL)
                 self.checkParam(self.AFFECT_FROM_SLEEP_BLOCKED)
                 self.checkParam(self.AFFECT_RANDOMIZE_VALENCE)
@@ -1445,12 +1444,18 @@ class miro_ros_client_gui:
                 self.checkParam(self.EXPRESS_THROUGH_TAIL)
                 self.checkParam(self.EXPRESS_THROUGH_EYELIDS)
                 self.checkParam(self.EXPRESS_THROUGH_EARS)
-                self.checkParam(self.EXPRESS_THROUGH_VOCAL)
+		self.checkParam(self.EXPRESS_THROUGH_VOCAL)
                 self.checkParam(self.EXPRESS_THROUGH_BODY)
                 self.checkParam(self.DEBUG_SONAR)
-                self.checkParam(self.EXPRESS_NO_PIRATE_NOISES)            
+                self.checkParam(self.EXPRESS_NO_PIRATE_NOISES)
                 self.checkParam(self.EXPRESS_DO_PIRATE_NOISES)
                 self.checkParam(self.ACTION_ENABLE)
+                self.checkParam(self.ACTION_DEBUG)
+                self.checkParam(self.ACTION_FORCE_MULL)
+                self.checkParam(self.ACTION_RANDOMIZE_ORIENT)
+                self.checkParam(self.ACTION_DISABLE_HALT)
+		self.checkParam(self.ACTION_MODULATE_BY_SONAR)
+                self.checkParam(self.BODY_ENABLE)
                 self.checkParam(self.BODY_RESET_KC_INTEGRATORS)
                 self.checkParam(self.BODY_NO_PUSH)
                 self.checkParam(self.BODY_NO_PUSH_MOTION)
@@ -1459,8 +1464,8 @@ class miro_ros_client_gui:
                 self.checkParam(self.ENABLE_POS_CONTROL)
                 self.checkParam(self.ENABLE_CLIFF_REFLEX)
                 self.checkParam(self.SPATIAL_ENABLE)
-                self.checkParam(self.SPATIAL_IGNORE_AUDIO)
-                self.checkParam(self.SPATIAL_IGNORE_VIDEO)                        
+		self.checkParam(self.SPATIAL_IGNORE_AUDIO)
+                self.checkParam(self.SPATIAL_IGNORE_VIDEO)
                 self.checkParam(self.SPATIAL_SEND_PRIORITY)
                 self.checkParam(self.SPATIAL_SEND_OTHER)
                 self.checkParam(self.SPATIAL_NO_REAFF_COMPROMISE)
@@ -1480,8 +1485,11 @@ class miro_ros_client_gui:
         if param == None:
             param = False
             rospy.set_param( self.param_root_path + param_name, param)
-            print(param_name + " not configured, set to FALSE")
-        self.demo_mode_boxes[param_name].set_active(param)
+            print("created new False parameter: " + self.param_root_path + param_name)
+	try:
+            self.demo_mode_boxes[param_name].set_active(param)
+        except:
+            print("error on get param " + self.param_root_path + param_name)
 
     # check box to ros parameter vocabolary
     BRANCH_ENABLE = "BRANCH_ENABLE"

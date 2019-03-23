@@ -1,0 +1,53 @@
+<launch>
+
+<!-- REAL ROBOT OR SIMULATION -->
+<arg name="ROBOT_NAME" value="rob01" /> <!-- rob01 or sim01 -->
+<arg name="GUI_FILE" value="$(find miro_behaviour_config)/script/miro_ros_client_gui.glade" />
+
+<!-- POSSIBLE BOOLEAN BEHAVIOUR PARAMETERS (false by default)
+BRANCH_ENABLE            AFFECT_ENABLE            AFFECT_ADJUST_RTC            AFFECT_VALENCE_DYNAMICS            AFFECT_AROUSAL_DYNAMICS
+AFFECT_ENABLE_SLEEP      AFFECT_FROM_CLOCK        AFFECT_FROM_WAKEFULNESS      AFFECT_FROM_TOUCH                  AFFECT_FROM_LIGHT
+AFFECT_FROM_SOUND        AFFECT_FROM_ACCEL        AFFECT_FROM_SLEEP_BLOCKED    AFFECT_RANDOMIZE_VALENCE           AFFECT_FAST_SLEEP_DYNAMICS
+EXPRESS_ENABLE           EXPRESS_THROUGH_LIGHT    EXPRESS_THROUGH_TAIL         EXPRESS_THROUGH_EYELIDS            EXPRESS_THROUGH_EARS
+EXPRESS_THROUGH_VOCAL    EXPRESS_THROUGH_BODY     DEBUG_SONAR                  EXPRESS_NO_PIRATE_NOISES           EXPRESS_DO_PIRATE_NOISES
+ACTION_ENABLE            ACTION_DEBUG             ACTION_FORCE_MULL            ACTION_RANDOMIZE_ORIENT            ACTION_DISABLE_HALT
+ACTION_MODULATE_BY_SONAR BODY_ENABLE              BODY_RESET_KC_INTEGRATORS    BODY_NO_PUSH                       BODY_NO_PUSH_MOTION      
+BODY_NO_PUSH_TRANSLATION BODY_NO_PUSH_INTO_SONAR  ENABLE_POS_CONTROL           ENABLE_CLIFF_REFLEX                SPATIAL_ENABLE
+SPATIAL_IGNORE_AUDIO     SPATIAL_IGNORE_VIDEO     SPATIAL_SEND_PRIORITY        SPATIAL_SEND_OTHER                 SPATIAL_NO_REAFF_COMPROMISE
+SPATIAL_NO_SUPPRESS      SPATIAL_SHOW_COMPROMISE  SPATIAL_SHOW_TEST_PATTERN    TEST_ALARM
+-->
+
+<!-- set parameters as demo mode -->
+<arg name="PARAM_ROOT" value="/$(arg ROBOT_NAME)/behaviour/flagConfig/"/>
+<param name="MIRO_PARAM_ROOT" value="$(arg PARAM_ROOT)"/>
+
+<param name="$(arg PARAM_ROOT)BRANCH_ENABLE" value="true"/>
+<param name="$(arg PARAM_ROOT)AFFECT_ENABLE" value="true"/>            
+<param name="$(arg PARAM_ROOT)AFFECT_ADJUST_RTC" value="true"/>            
+<param name="$(arg PARAM_ROOT)AFFECT_VALENCE_DYNAMICS" value="true"/>
+<param name="$(arg PARAM_ROOT)AFFECT_AROUSAL_DYNAMICS" value="true"/>
+<param name="$(arg PARAM_ROOT)AFFECT_ENABLE_SLEEP" value="true"/>  
+<param name="$(arg PARAM_ROOT)AFFECT_FROM_CLOCK" value="true"/>      
+<param name="$(arg PARAM_ROOT)AFFECT_FROM_WAKEFULNESS" value="true"/>
+<param name="$(arg PARAM_ROOT)AFFECT_FROM_TOUCH" value="true"/>            
+<param name="$(arg PARAM_ROOT)AFFECT_FROM_LIGHT" value="true"/>
+<param name="$(arg PARAM_ROOT)AFFECT_FROM_SOUND" value="true"/>
+<param name="$(arg PARAM_ROOT)AFFECT_FROM_ACCEL" value="true"/>        
+<param name="$(arg PARAM_ROOT)EXPRESS_ENABLE" value="true"/>        
+<param name="$(arg PARAM_ROOT)EXPRESS_THROUGH_LIGHT" value="true"/>
+<param name="$(arg PARAM_ROOT)EXPRESS_THROUGH_TAIL" value="true"/>        
+<param name="$(arg PARAM_ROOT)EXPRESS_THROUGH_EYELIDS" value="true"/>
+<param name="$(arg PARAM_ROOT)EXPRESS_THROUGH_EARS" value="true"/>
+<param name="$(arg PARAM_ROOT)EXPRESS_THROUGH_VOCAL" value="true"/>  
+<param name="$(arg PARAM_ROOT)EXPRESS_THROUGH_BODY" value="true"/> 
+<param name="$(arg PARAM_ROOT)ACTION_ENABLE" value="true"/>
+<param name="$(arg PARAM_ROOT)ACTION_MODULATE_BY_SONAR" value="true"/>
+<param name="$(arg PARAM_ROOT)BODY_NO_PUSH_INTO_SONAR" value="true"/>
+<param name="$(arg PARAM_ROOT)ENABLE_CLIFF_REFLEX" value="true"/>
+<param name="$(arg PARAM_ROOT)SPATIAL_ENABLE" value="true"/>
+<!--<param name="$(arg PARAM_ROOT)BODY_ENABLE" value="true"/> -->
+
+<!-- MIRO GUI -->
+<node name="miro_behaviour_controller" pkg="miro_behaviour_config" type="miro_behaviour_controller.py" args="robot:=$(arg ROBOT_NAME) gui_template:=$(arg GUI_FILE)" output="screen"/>
+
+</launch>

@@ -626,7 +626,7 @@ class miro_ros_client_gui:
             # config
             if self.do_config:
                 self.do_config = self.do_config - 1
-                if self.do_config == 0:
+                if self.do_config == 0: # wait 50 times before configure
                     c = core_config()
                     if self.chk_branch_enable.get_active():
                          c.P2B_W_signals = c.P2B_W_signals | miro.MIRO_P2B_W_BRANCH_ENABLE
@@ -1034,13 +1034,12 @@ class miro_ros_client_gui:
     def chk_config(self, label, demo_mode_setting = False):
         obj = self.builder.get_object(label)
         obj.connect("clicked", self.redo_config) 
-       
-        self.demo_mode_boxes[obj.get_label()] = obj
-#        print("Bheaviour controlling flag (see ROS param): " + obj.get_label())
         if demo_mode_setting:
             self.demo_mode_on.append(obj)
         else:
             self.demo_mode_off.append(obj)
+        self.demo_mode_boxes[obj.get_label()] = obj
+#        print("Bheaviour controlling flag (see ROS param): " + obj.get_label())
         return obj
 
     def button_config_demo(self, object, data=None):
@@ -1066,8 +1065,6 @@ class miro_ros_client_gui:
         # thread for checking the flag in the ros parameter server
         self.rosparam_checker = Thread(target=self.update_ros_param)
         self.mutex = Lock()
-        # array with all the check box
-        self.demo_mode_boxes = {}
         
         # options
         self.opt = lambda:0
@@ -1174,6 +1171,7 @@ class miro_ros_client_gui:
         # config
         self.demo_mode_off = []
         self.demo_mode_on = []
+        self.demo_mode_boxes = {}        # array with all the check box
         self.chk_branch_enable = self.chk_config("chk_branch_enable", True)
         self.chk_affect_enable = self.chk_config("chk_affect_enable", True)
         self.chk_affect_adjust_rtc = self.chk_config("chk_affect_adjust_rtc", True)
@@ -1494,12 +1492,13 @@ class miro_ros_client_gui:
         elif isinstance(param, bool):
             try:
                 self.demo_mode_boxes[param_name].set_active(param) # TODO this function generates segmentation fault, core dumpt
+                                                                   # made here a switch case with chk_...._...
             except:
                 print("ERROR on get checkbox from parameter [" + self.param_root_path + "]" + param_name + ":=" + str(param))
         else:
             print("ERROR not boolean parameter [" + self.param_root_path + "]" + param_name + ":=" + str(param))
 
-    # check box to ros parameter vocabolary
+    # check box to ros parameter vocabolary (those must be equivalent to the gui_template file)
     BRANCH_ENABLE = "BRANCH_ENABLE"
     AFFECT_ENABLE = "AFFECT_ENABLE"
     AFFECT_ADJUST_RTC = "AFFECT_ADJUST_RTC"

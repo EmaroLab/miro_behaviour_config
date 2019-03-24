@@ -2006,7 +2006,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="chk_action_disable_halt">
-                        <property name="label" translatable="yes">ACTION_DISABLE_HALT	</property>
+                        <property name="label" translatable="yes">ACTION_DISABLE_HALT</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

@@ -130,10 +130,10 @@ MIRO_CAM_HORI_HALF_FOV = miro.__DEG2RAD(45)
 # of a point in the affine projection to find the distortion
 # coefficient.
 def camera_model_distort_coeff(rad2):
-	rad4 = rad2 * rad2
-	return 1.0 \
-		+ MIRO_CAM_DISTORTION_MODEL_K1 * rad2 \
-		+ MIRO_CAM_DISTORTION_MODEL_K2 * rad4
+        rad4 = rad2 * rad2
+        return 1.0 \
+                + MIRO_CAM_DISTORTION_MODEL_K1 * rad2 \
+                + MIRO_CAM_DISTORTION_MODEL_K2 * rad4
 
 # Apply distortion (map from affine projection space to image
 # space).
@@ -876,7 +876,7 @@ class miro_ros_client_gui:
                     else: rospy.set_param(self.param_root_path + self.TEST_ALARM,False)
                     c.msg_flags = c.FLAG_UPDATE_SIGNALS;
                     self.pub_core_config.publish(c)
-                    print("config sent")
+                    print("update core tab connection to rosparam")
         finally:
             self.mutex.release()                    
 
@@ -987,7 +987,6 @@ class miro_ros_client_gui:
 
         # publish
         self.pub_platform_control.publish(q)
-
         # publish
         q = core_control()
         q.msg_flags = core_control.FLAG_SYNC_PLATFORM | core_control.FLAG_SYNC_CORE
@@ -1034,9 +1033,10 @@ class miro_ros_client_gui:
 
     def chk_config(self, label, demo_mode_setting = False):
         obj = self.builder.get_object(label)
-        obj.connect("clicked", self.redo_config)        
+        obj.connect("clicked", self.redo_config) 
+       
         self.demo_mode_boxes[obj.get_label()] = obj
-        print("Bheaviour controlling flag (see ROS param): " + obj.get_label())
+#        print("Bheaviour controlling flag (see ROS param): " + obj.get_label())
         if demo_mode_setting:
             self.demo_mode_on.append(obj)
         else:
@@ -1225,6 +1225,10 @@ class miro_ros_client_gui:
         self.chk_test_alarm = self.chk_config("chk_test_alarm")
         self.builder.get_object("button_config_demo").connect("clicked", self.button_config_demo)
         self.builder.get_object("button_config_reset").connect("clicked", self.button_config_reset)
+
+#        print("Bheaviour controlling flag (see ROS param)")
+#        for key in self.demo_mode_boxes:
+#        	print "the key name is " + key + " and its checkbox label is"  + self.demo_mode_boxes[key].get_label()
 
         # bridge
         self.chk_no_publish_mics = self.builder.get_object("chk_no_publish_mics")
@@ -1424,7 +1428,7 @@ class miro_ros_client_gui:
         while not rospy.is_shutdown():
             self.mutex.acquire()
             try:
-		self.checkParam(self.BRANCH_ENABLE)
+                self.checkParam(self.BRANCH_ENABLE)
                 self.checkParam(self.AFFECT_ENABLE)
                 self.checkParam(self.AFFECT_ADJUST_RTC)
                 self.checkParam(self.AFFECT_VALENCE_DYNAMICS)
@@ -1434,7 +1438,7 @@ class miro_ros_client_gui:
                 self.checkParam(self.AFFECT_FROM_WAKEFULNESS)
                 self.checkParam(self.AFFECT_FROM_TOUCH)
                 self.checkParam(self.AFFECT_FROM_LIGHT)
-		self.checkParam(self.AFFECT_FROM_SOUND)
+                self.checkParam(self.AFFECT_FROM_SOUND)
                 self.checkParam(self.AFFECT_FROM_ACCEL)
                 self.checkParam(self.AFFECT_FROM_SLEEP_BLOCKED)
                 self.checkParam(self.AFFECT_RANDOMIZE_VALENCE)
@@ -1444,7 +1448,7 @@ class miro_ros_client_gui:
                 self.checkParam(self.EXPRESS_THROUGH_TAIL)
                 self.checkParam(self.EXPRESS_THROUGH_EYELIDS)
                 self.checkParam(self.EXPRESS_THROUGH_EARS)
-		self.checkParam(self.EXPRESS_THROUGH_VOCAL)
+                self.checkParam(self.EXPRESS_THROUGH_VOCAL)
                 self.checkParam(self.EXPRESS_THROUGH_BODY)
                 self.checkParam(self.DEBUG_SONAR)
                 self.checkParam(self.EXPRESS_NO_PIRATE_NOISES)
@@ -1454,7 +1458,7 @@ class miro_ros_client_gui:
                 self.checkParam(self.ACTION_FORCE_MULL)
                 self.checkParam(self.ACTION_RANDOMIZE_ORIENT)
                 self.checkParam(self.ACTION_DISABLE_HALT)
-		self.checkParam(self.ACTION_MODULATE_BY_SONAR)
+                self.checkParam(self.ACTION_MODULATE_BY_SONAR)
                 self.checkParam(self.BODY_ENABLE)
                 self.checkParam(self.BODY_RESET_KC_INTEGRATORS)
                 self.checkParam(self.BODY_NO_PUSH)
@@ -1464,7 +1468,7 @@ class miro_ros_client_gui:
                 self.checkParam(self.ENABLE_POS_CONTROL)
                 self.checkParam(self.ENABLE_CLIFF_REFLEX)
                 self.checkParam(self.SPATIAL_ENABLE)
-		self.checkParam(self.SPATIAL_IGNORE_AUDIO)
+                self.checkParam(self.SPATIAL_IGNORE_AUDIO)
                 self.checkParam(self.SPATIAL_IGNORE_VIDEO)
                 self.checkParam(self.SPATIAL_SEND_PRIORITY)
                 self.checkParam(self.SPATIAL_SEND_OTHER)
@@ -1475,21 +1479,25 @@ class miro_ros_client_gui:
                 self.checkParam(self.TEST_ALARM)
             finally:
                 self.mutex.release()
+
             rate.sleep()
             if self.terminate_rosparam_check==True:
                 print("closing ros parameter checker")
                 break
 
+    # creates new Flase ROS parameters, or sets the checkbox if it already exists
     def checkParam(self,param_name):
         param = rospy.get_param( self.param_root_path + param_name, None)
-        if param == None:
-            param = False
-            rospy.set_param( self.param_root_path + param_name, param)
+        if param == None: # create parameter
+            rospy.set_param( self.param_root_path + param_name, False)
             print("created new False parameter: " + self.param_root_path + param_name)
-	try:
-            self.demo_mode_boxes[param_name].set_active(param)
-        except:
-            print("error on get param " + self.param_root_path + param_name)
+        elif isinstance(param, bool):
+            try:
+                self.demo_mode_boxes[param_name].set_active(param) # TODO this function generates segmentation fault, core dumpt
+            except:
+                print("ERROR on get checkbox from parameter [" + self.param_root_path + "]" + param_name + ":=" + str(param))
+        else:
+            print("ERROR not boolean parameter [" + self.param_root_path + "]" + param_name + ":=" + str(param))
 
     # check box to ros parameter vocabolary
     BRANCH_ENABLE = "BRANCH_ENABLE"

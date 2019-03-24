@@ -6,7 +6,7 @@ This repository contains a wrapper of the [https://consequential.bitbucket.io/De
 # Installation & run
 - clone this repository in your `catkin` workspace
 - dowload the [http://labs.consequentialrobotics.com/miro-b/software/](Miro mdk) and unzip it into the folder `~/mdk`
-- in all your terminals (or in the `~/.bashrc` file) type
+- in all your terminals (or in the `~/.bashrc` file) set
 	- `export MIRO_PATH_MDK=~/mdk`
 	- `export ROS_PACKAGE_PATH=$MIRO_PATH_MDK/share:$ROS_PACKAGE_PATH`
 	- `export PYTHONPATH=$MIRO_PATH_MDK/share:$PYTHONPATH`
@@ -19,7 +19,11 @@ This repository contains a wrapper of the [https://consequential.bitbucket.io/De
 If the steps above are successful you will see an GUI for giving commands to Miro as distributed from **Consequential Robotics**.
 In this repository the check-boxes of the `core` tab will be synchronized to related ROS parameters, which are boolean and listed below.
 Now you can change behaviors of Miro from ROS node, services and launchers online!
-For a simple test use `rosparam set /rob01/behaviour/flagConfig/BODY_ENABLE true` and check the `core` tab in the GUI
+
+For a simple test use
+```rosparam set /rob01/behaviour/flagConfig/BODY_ENABLE true``` 
+and check the `core` tab in the GUI.
+You schould run thi command only after that the `update core tab connection to rosparam` happeared in the terminal.
 
 # Launcher
 The repository contains a launcher that runs the `miro_behaviour_controller` node with the `robot` name and `gui_template` file path arguments

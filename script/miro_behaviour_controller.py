@@ -1422,7 +1422,7 @@ class miro_ros_client_gui:
     # tread to check the ros parameter server value
     terminate_rosparam_check = False    
     def update_ros_param(self):
-        rate = rospy.Rate(2) # 10hz
+        rate = rospy.Rate(10) # 10hz
         while not rospy.is_shutdown():
             self.mutex.acquire()
             try:

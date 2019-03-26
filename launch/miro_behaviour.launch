@@ -1,7 +1,7 @@
 <launch>
 
 <!-- REAL ROBOT OR SIMULATION -->
-<arg name="ROBOT_NAME" value="rob01" /> <!-- rob01 or sim01 -->
+<arg name="MIRO_NAME" value="rob01" /> <!-- rob01 or sim01 -->
 <arg name="GUI_FILE" value="$(find miro_behaviour_config)/script/miro_ros_client_gui.glade" />
 
 <!-- POSSIBLE BOOLEAN BEHAVIOUR PARAMETERS (false by default)
@@ -18,7 +18,7 @@ SPATIAL_NO_SUPPRESS      SPATIAL_SHOW_COMPROMISE  SPATIAL_SHOW_TEST_PATTERN    T
 -->
 
 <!-- set parameters as demo mode -->
-<arg name="PARAM_ROOT" value="/$(arg ROBOT_NAME)/behaviour/flagConfig/"/>
+<arg name="PARAM_ROOT" value="/$(arg MIRO_NAME)/behaviour/flagConfig/"/>
 <param name="MIRO_PARAM_ROOT" value="$(arg PARAM_ROOT)"/>
 
 <param name="$(arg PARAM_ROOT)BRANCH_ENABLE" value="true"/>
@@ -48,6 +48,6 @@ SPATIAL_NO_SUPPRESS      SPATIAL_SHOW_COMPROMISE  SPATIAL_SHOW_TEST_PATTERN    T
 <!--<param name="$(arg PARAM_ROOT)BODY_ENABLE" value="true"/> -->
 
 <!-- MIRO GUI -->
-<node name="miro_behaviour_controller" pkg="miro_behaviour_config" type="miro_behaviour_controller.py" args="robot:=$(arg ROBOT_NAME) gui_template:=$(arg GUI_FILE)" output="screen"/>
+<node name="miro_behaviour_controller" pkg="miro_behaviour_config" type="miro_behaviour_controller.py" args="robot:=$(arg MIRO_NAME) gui_template:=$(arg GUI_FILE)" output="screen"/>
 
 </launch>

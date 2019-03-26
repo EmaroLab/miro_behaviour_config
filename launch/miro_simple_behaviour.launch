@@ -1,0 +1,8 @@
+<launch>
+
+<arg name="ROBOT_NAME" value="rob01" /> <!-- rob01 or sim01 -->
+<arg name="GUI_FILE" value="$(find miro_behaviour_config)/script/miro_ros_client_gui.glade" />
+
+<!-- <node name="miro_behaviour_controller" pkg="miro_behaviour_config" type="miro_behaviour_controller.py" args="robot:=$(arg ROBOT_NAME) gui_template:=$(arg GUI_FILE)" output="screen"/> -->
+
+</launch>
